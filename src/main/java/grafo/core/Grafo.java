@@ -2,8 +2,10 @@ package main.java.grafo.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class Grafo {
 	private int qtdMaximaVertices;
@@ -32,7 +34,7 @@ public class Grafo {
 			this.rotulosEmIndices.put(rotulo, qtdAtualVertices);
 			qtdAtualVertices++;
 		} else {
-			throw new Exception("A quantidade de v�rtices permitida (" + qtdMaximaVertices + ")	foi	excedida.");
+			throw new Exception("A quantidade de vértices permitida (" + qtdMaximaVertices + ")	foi	excedida.");
 		}
 	}
 
@@ -48,7 +50,7 @@ public class Grafo {
 
 	public void conectarVertices(String rotuloVerticeInicial, String rotuloVerticeFinal) throws Exception {
 		if (!this.existeVertice(rotuloVerticeInicial) || !this.existeVertice(rotuloVerticeFinal)) {
-			throw new Exception("Para adicionar uma aresta ambos os v�rtices devem existir.");
+			throw new Exception("Para adicionar uma aresta ambos os vértices devem existir.");
 		}
 		criarMatrizAdjacencia();
 		int indiceVerticeFinal = this.rotulosEmIndices.get(rotuloVerticeInicial);
@@ -64,7 +66,7 @@ public class Grafo {
 
 	private boolean existeVerticeOrThrow(String vertice) {
 		if (!existeVertice(vertice)) {
-			throw new IllegalArgumentException("O v�rtice n�o existe.");
+			throw new IllegalArgumentException("O vértice não existe.");
 		}
 		return true;
 	}
@@ -79,4 +81,38 @@ public class Grafo {
 			this.matrizAdjacencia = new MatrizAdjacencia(new ArrayList<Vertice>(this.vertices));
 		}
 	}
+	
+	public Grafo arvoreGeradoraPorProfundidade() throws Exception {
+		Grafo arvore = new Grafo();
+		
+		Stack<Vertice> roloDeBarbante = new Stack<Vertice>();
+		LinkedList<String> verticesVisitados = new LinkedList<String>();
+		List<Vertice> vertices = getVertices();
+		
+		for (Vertice v : vertices) {
+			arvore.adicionarVertice(v.getRotulo());
+		}
+		
+		Vertice verticePontoDePartida = vertices.get(0);
+		verticesVisitados.add(verticePontoDePartida.getRotulo());
+		roloDeBarbante.push(verticePontoDePartida);
+		
+		 while (!roloDeBarbante.empty()) {
+			 Vertice verticeAnalisado = roloDeBarbante.peek();
+			 Vertice proximoVertice = obterProximoVertice(verticeAnalisado, verticesVisitados);
+			 if (proximoVertice == null) {
+				 roloDeBarbante.pop();
+			 } else {
+				 String rotulo = proximoVertice.getRotulo();
+				 verticesVisitados.add(rotulo);
+				 roloDeBarbante.push(proximoVertice);
+				 arvore.conectarVertices(verticeAnalisado.getRotulo(), proximoVertice.getRotulo());
+			 }
+		 }
+		
+		return arvore;
+	}
+	
+	
+	
 }
