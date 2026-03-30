@@ -113,7 +113,7 @@ public class Grafo {
 				String rotulo = proximoVertice.getRotulo();
 				verticesVisitados.add(rotulo);
 				roloDeBarbante.push(proximoVertice);
-				arvore.conectarVertices(verticeAnalisado.getRotulo(), proximoVertice.getRotulo());
+				arvore.conectarVertices(verticeAnalisado.getRotulo(), proximoVertice.getRotulo(), null);
 			}
 		}
 
