@@ -74,6 +74,33 @@ public class MatrizAdjacencia {
 	}
 	
 	public int getQtdVertices() {
-		return qtdvertices;
+		return qtdVertices;
+		}
+	
+	void copiaValoresPara(MatrizAdjacencia matrizDestino) throws Exception {
+		if (matrizDestino.getQtdVertices() < this.qtdVertices) {
+			throw new Exception("Somnte é possível executar cópias em matrizes com dimensões iguais " +
+							"ou a matriz de destino deve ter dimensões maiores que a matriz de origem.");
+		}
+		
+		for (int i=0; i<matriz.length; i++) {
+			for (int j=0; j<matriz[i].length; j++) {
+				matrizDestino.escreveNaCelula(i, j, matriz[i][j]);
+			}
+		}
+	}
+	
+	private void escreveNaCelula(int linha, int coluna, int valor) {
+		this.matriz[linha][coluna] = valor;
+	}
+	
+	private void adicionarAncestral(int indiceVertice, Vertice ancestral) {
+		if (this.ancestrais.get(indiceVertice) == null) {
+			List<Vertice> ancestrais = new ArrayList<>();
+			ancestrais.add(ancestral);
+			this.ancestrais.put(indiceVertice, ancestrais);
+		} else {
+			this.ancestrais.get(indiceVertice).add(ancestral);
+		}
 	}
 }
