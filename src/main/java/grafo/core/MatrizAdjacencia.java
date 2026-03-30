@@ -29,16 +29,17 @@ public class MatrizAdjacencia {
 		}
 	}
 
-	public void adicionarAresta(int indiceVerticeInicial, int indiceVerticeFinal) {
+	public void adicionarAresta(int indiceVerticeInicial, int indiceVerticeFinal, Integer peso) {
+		peso = peso == null ? 1 : peso;
 		Vertice verticeInicial = vertices.get(indiceVerticeInicial);
 		Vertice verticeFinal = vertices.get(indiceVerticeFinal);
 		if (indiceVerticeInicial == indiceVerticeFinal) {
-			matriz[indiceVerticeInicial][indiceVerticeInicial] = 1;
+			matriz[indiceVerticeInicial][indiceVerticeInicial] = peso;
 			verticeInicial.addGrau();
 		} else {
-			matriz[indiceVerticeInicial][indiceVerticeFinal] = 1;
+			matriz[indiceVerticeInicial][indiceVerticeFinal] = peso;
 			verticeInicial.addGrau();
-			matriz[indiceVerticeFinal][indiceVerticeInicial] = 1;
+			matriz[indiceVerticeFinal][indiceVerticeInicial] = peso;
 			verticeFinal.addGrau();
 		}
 	}
@@ -47,13 +48,17 @@ public class MatrizAdjacencia {
 		int linha = indiceVertice;
 		List<Vertice> adjacencias = new ArrayList<>();
 		for (int j = 0; j < vertices.size(); j++) {
-			if (matriz[linha][j] == 1) {
+			if (matriz[linha][j] != 0) {
 				Vertice vertice = vertices.get(j);
 				adjacencias.add(vertice);
 			}
 		}
 		return adjacencias;
 	}
+	
+	/*	O método adicionarArestaDirecionada dá suporte à criação de arestas
+		direcionadas entre vértices, estas podendo possuir pesos ou não
+	 */
 	
 	public void adicionarArestaDirecionada(int indiceVerticeInicial, int indiceVerticeFinal, Integer peso) {
 		peso = peso == null ? 1 : peso;
@@ -70,14 +75,25 @@ public class MatrizAdjacencia {
 		
 	}
 	
+	/*	O método getPeso retorna o valor da célula da matriz dado os
+		índices dos vértices iniciais e finais*/
+	
 	int getPeso(int indiceVerticeInicial, int indiceVerticeFinal) {
 		return this.matriz[indiceVerticeInicial][indiceVerticeFinal];
 	}
 	
+	
+	/* 	O método getQtdVertices
+		simplesmente retorna a quantidade de vértices presentes na matriz
+	 */
 	public int getQtdVertices() {
 		return qtdVertices;
 		}
 	
+	/*	O método copiaValoresPara
+	 é usado para copiar valores de uma 
+	 matriz de origem para outra de destino.
+	 */
 	void copiaValoresPara(MatrizAdjacencia matrizDestino) throws Exception {
 		if (matrizDestino.getQtdVertices() < this.qtdVertices) {
 			throw new Exception("Somnte é possível executar cópias em matrizes com dimensões iguais " +
@@ -90,11 +106,19 @@ public class MatrizAdjacencia {
 			}
 		}
 	}
+	/* O método escreveNaCelula
+	recebe como parâmetro uma combinação de linha e coluna 
+	junto com o valor que deve ser adicionado na célula
+	correspondente*/
 	
 	private void escreveNaCelula(int linha, int coluna, int valor) {
 		this.matriz[linha][coluna] = valor;
 	}
 	
+	/*	Os métodos adicionarAncestral , getAncestrais e hasAncestrais
+	 	apoiam a construção de árvores geradoras a partir de dígrafos
+	 */
+
 	private void adicionarAncestral(int indiceVertice, Vertice ancestral) {
 		if (this.ancestrais.get(indiceVertice) == null) {
 			List<Vertice> ancestrais = new ArrayList<>();
@@ -104,6 +128,7 @@ public class MatrizAdjacencia {
 			this.ancestrais.get(indiceVertice).add(ancestral);
 		}
 	}
+	
 	
 	List<Vertice> getAncestrais(int indiceVertice) {
 		if (this.ancestrais.get(indiceVertice) == null) {
@@ -115,4 +140,6 @@ public class MatrizAdjacencia {
 	boolean hasAncestrais(int indiceVertice) {
 		return this.ancestrais.containsKey(indiceVertice);	
 	}
+	
+	
 }
