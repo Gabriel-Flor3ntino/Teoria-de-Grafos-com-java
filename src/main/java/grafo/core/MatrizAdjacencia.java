@@ -1,6 +1,7 @@
 package main.java.grafo.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,5 +103,16 @@ public class MatrizAdjacencia {
 		} else {
 			this.ancestrais.get(indiceVertice).add(ancestral);
 		}
+	}
+	
+	List<Vertice> getAncestrais(int indiceVertice) {
+		if (this.ancestrais.get(indiceVertice) == null) {
+			return Collections.emptyList();
+		}
+		return this.ancestrais.get(indiceVertice);
+	}
+	
+	boolean hasAncestrais(int indiceVertice) {
+		return this.ancestrais.containsKey(indiceVertice);	
 	}
 }
