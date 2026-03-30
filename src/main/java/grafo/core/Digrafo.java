@@ -23,7 +23,14 @@ public class Digrafo extends Grafo {
 		String raiz = super.getVertices().get(0).getRotulo();
 		return this.arvoreGeradoraPorProfundidade(raiz);
 	}
-
+	
+	/* 	O método arvoreGeradoraPorProfundidade(raiz) 
+		marca todos os vértices
+		do dígrafo como "não visitados" e 
+		inicia o processo a partir da raiz,
+		caso tenha sido especificada
+	 */
+	
 	public Grafo arvoreGeradoraPorProfundidade(String raiz) throws Exception {
 		LinkedHashSet<String> aVisitar = new LinkedHashSet<String>();
 		Digrafo arvore = new Digrafo();
@@ -63,5 +70,19 @@ public class Digrafo extends Grafo {
 		}
 		return arvore;
 	}
-
+	
+	private void visitar(String corrente, LinkedHashSet<String> aVisitar, Digrafo arvore) throws Exception{
+		for(Vertice vizinho : super.getAdjacencias(corrente)) {
+			String rotulo = vizinho.getRotulo();
+			if (!aVisitar.contains(rotulo)) {
+				continue;
+			}
+			arvore.adicionarVertice(rotulo);
+			arvore.conectarVertices(corrente, rotulo, null);
+			aVisitar.remove(rotulo);
+			visitar(rotulo, aVisitar, arvore);
+		}
+	}
+		
+	
 }
