@@ -29,6 +29,9 @@ public class MatrizAdjacencia {
 		}
 	}
 
+	/*	O método adicionarAresta passou por modificações
+		para o recebimento de pesos de arestas como parâmetro
+	 */
 	public void adicionarAresta(int indiceVerticeInicial, int indiceVerticeFinal, Integer peso) {
 		peso = peso == null ? 1 : peso;
 		Vertice verticeInicial = vertices.get(indiceVerticeInicial);
@@ -43,6 +46,11 @@ public class MatrizAdjacencia {
 			verticeFinal.addGrau();
 		}
 	}
+	
+	/*	O método getAdjacencias teve que ser modificado para que dê
+		suporte à diversidade de valores que podem existir nas células de
+		uma matriz
+	 */
 
 	public List<Vertice> getAdjacencias(int indiceVertice) {
 		int linha = indiceVertice;
