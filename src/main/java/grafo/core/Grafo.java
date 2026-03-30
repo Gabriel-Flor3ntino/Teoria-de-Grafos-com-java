@@ -131,4 +131,15 @@ public class Grafo {
 		}
 		return null;
 	}
+	
+	public int getPeso(String rotuloVerticeInicial, String rotuloVerticeFinal) {
+		int indiceVerticeInicial = rotulosEmIndices.get(rotuloVerticeInicial);
+		int inidceverticeFinal = rotulosEmIndices.get(rotuloVerticeFinal);
+		return matrizAdjacencia.getPeso(indiceVerticeInicial, inidceverticeFinal);
+	}
+	
+	
+	
+	
+	
 }
