@@ -8,6 +8,8 @@ import main.java.grafo.core.Digrafo;
 import main.java.grafo.core.Grafo;
 import main.java.grafo.core.Vertice;
 import main.java.grafo.util.AlgoritmoDijkstra;
+import main.java.grafo.util.AlgoritmoFloydWarshall;
+import main.java.grafo.util.AlgoritmoPrim;
 
 public class TesteGrafo {
 	public static void main(String[] args) throws Exception {
@@ -33,6 +35,7 @@ public class TesteGrafo {
 		digrafo.conectarVertices("SP", "PA", null);
 		digrafo.conectarVertices("SV", "PA", null);
 		digrafo.conectarVertices("CR", "PA", null);
+
 		Grafo arvore = digrafo.arvoreGeradoraPorProfundidade("PT");
 
 		System.out.println("--- Árvore geradora via busca por profundidade usando raiz ---");
@@ -50,7 +53,8 @@ public class TesteGrafo {
 			}
 			System.out.println();
 		}
-
+		
+		/*
 		Grafo grafoPonderado = new Grafo();
 		grafoPonderado.adicionarVertice("A");
 		grafoPonderado.adicionarVertice("B");
@@ -72,7 +76,7 @@ public class TesteGrafo {
 
 		peso = grafoPonderado.getPeso("B", "E");
 
-		System.out.println("Peso da aresta BE: " + peso);
+		System.out.println("Peso da aresta BE: " + peso);*/
 
 		Digrafo digrafoPonderado = new Digrafo();
 		digrafoPonderado.adicionarVertice("X");
@@ -86,36 +90,79 @@ public class TesteGrafo {
 		digrafoPonderado.conectarVertices("X", "V", 16);
 		digrafoPonderado.conectarVertices("V", "X", 22);
 		digrafoPonderado.conectarVertices("V", "Y", 57);
-		
+
 		System.out.println("Dígrafo Ponderado");
 		System.out.println("Vértices:");
-		
+
 		for (Vertice v : digrafoPonderado.getVertices()) {
 			System.out.println("\t" + v.getRotulo());
 		}
-		
+
 		System.out.println();
 		System.out.println("Arestas:");
-		
+
 		for (Vertice v : digrafoPonderado.getVertices()) {
 			for (Vertice adj : digrafoPonderado.getAdjacencias(v.getRotulo())) {
 				System.out.println("\t" + v.getRotulo() + adj.getRotulo() + " : "
 						+ digrafoPonderado.getPeso(v.getRotulo(), adj.getRotulo()));
 			}
 		}
+
+		Grafo grafoPonderado = new Grafo();
+		grafoPonderado.adicionarVertice("A");
+		grafoPonderado.adicionarVertice("B");
+		grafoPonderado.adicionarVertice("C");
+		grafoPonderado.adicionarVertice("D");
+		grafoPonderado.adicionarVertice("E");
+		grafoPonderado.adicionarVertice("F");
+		grafoPonderado.conectarVertices("A", "C", 8);
+		grafoPonderado.conectarVertices("A", "D", 14);
+		grafoPonderado.conectarVertices("A", "F", 14);
+		grafoPonderado.conectarVertices("B", "C", 8);
+		grafoPonderado.conectarVertices("B", "D", 15);
+		grafoPonderado.conectarVertices("B", "E", 4);
+		grafoPonderado.conectarVertices("B", "F", 2);
+		grafoPonderado.conectarVertices("C", "E", 3);
+		grafoPonderado.conectarVertices("C", "D", 7);
+		grafoPonderado.conectarVertices("E", "F", 12);
 		
-		Grafo grafo = new Grafo();
-		
-		// afição de vértices
-		// criaçaõ de arestas com peso
-		
-		Map<String, AlgoritmoDijkstra.Info> menoresCaminhos = AlgoritmoDijkstra.getInstance().processar("X", "Y", grafo);
+		Map<String, AlgoritmoDijkstra.Info> menoresCaminhos = AlgoritmoDijkstra.getInstance().processar("X", "Y",
+				grafoPonderado);
 		Set<String> keys = menoresCaminhos.keySet();
 		for (String key : keys) {
 			AlgoritmoDijkstra.Info info = menoresCaminhos.get(key);
 			String predecessor = info.predecessor == null ? "" : info.predecessor.getRotulo();
 			System.out.println(key + " : " + info.distancia + " - " + predecessor);
 		}
+		
+		Map<String, Map<String, AlgoritmoFloydWarshall.Info>> matriz = AlgoritmoFloydWarshall.getInstance()
+				.processar(digrafo);
+		for (String v : matriz.keySet()) {
+			System.out.println("Vértice " + v);
+			Map<String, AlgoritmoFloydWarshall.Info> linha = matriz.get(v);
+			for (String u : linha.keySet()) {
+				AlgoritmoFloydWarshall.Info info = linha.get(u);
+				System.out.println(u + " com distância " + info.distancia + " por" + info.porQualVertice.getRotulo());
+			}
+			System.out.println();
+		}
+
+
+		
+
+		String raiz = "RJ"; // pode ser qualquer raiz
+		Digrafo mst = AlgoritmoPrim.getInstance().processar(raiz, grafoPonderado);
+		for (Vertice v : mst.getVertices()) {
+			System.out.println("O vértice " + v.getRotulo() + " é adjacente aos vértices:");
+		}
+
+		for (Vertice adj : mst.getAdjacencias(v.getRotulo())) {
+			System.out.println(adj.getRotulo() + " com peso " + mst.getPeso(v.getRotulo(), adj.getRotulo()));
+		}
+
+		System.out.println();
+		System.out.println();
 
 	}
+
 }
