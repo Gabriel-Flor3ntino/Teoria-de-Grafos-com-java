@@ -9,6 +9,17 @@ import main.java.grafo.core.Grafo;
 import main.java.grafo.core.Vertice;
 
 public class AlgoritmoDijkstra {
+	
+	private static AlgoritmoDijkstra algoritmoDijkstra;
+	
+	private AlgoritmoDijkstra() {}
+	
+	public static AlgoritmoDijkstra getInstance() {
+		if (algoritmoDijkstra == null) {
+			return new AlgoritmoDijkstra();
+		}
+		return algoritmoDijkstra;
+	}
 
 	public Map<String, Info> processar(String origem, String destino, Grafo grafo) {
 		try {
@@ -59,5 +70,17 @@ public class AlgoritmoDijkstra {
 		}
 		
 		return infoVertice;
+	}
+	
+	
+	
+	public class Info {
+		public int distancia;
+		public Vertice predecessor;
+		
+		Info(int distancia, Vertice predecessor) {
+			this.distancia = distancia;
+			this.predecessor = predecessor;
+		}
 	}
 }

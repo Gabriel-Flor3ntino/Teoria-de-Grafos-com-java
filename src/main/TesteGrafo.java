@@ -1,12 +1,13 @@
 package main;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import main.java.grafo.core.Digrafo;
 import main.java.grafo.core.Grafo;
 import main.java.grafo.core.Vertice;
-import main.java.grafo.search.BuscaEmLargura;
-import main.java.grafo.search.BuscaEmProfundidade;
+import main.java.grafo.util.AlgoritmoDijkstra;
 
 public class TesteGrafo {
 	public static void main(String[] args) throws Exception {
@@ -101,6 +102,19 @@ public class TesteGrafo {
 				System.out.println("\t" + v.getRotulo() + adj.getRotulo() + " : "
 						+ digrafoPonderado.getPeso(v.getRotulo(), adj.getRotulo()));
 			}
+		}
+		
+		Grafo grafo = new Grafo();
+		
+		// afição de vértices
+		// criaçaõ de arestas com peso
+		
+		Map<String, AlgoritmoDijkstra.Info> menoresCaminhos = AlgoritmoDijkstra.getInstance().processar("X", "Y", grafo);
+		Set<String> keys = menoresCaminhos.keySet();
+		for (String key : keys) {
+			AlgoritmoDijkstra.Info info = menoresCaminhos.get(key);
+			String predecessor = info.predecessor == null ? "" : info.predecessor.getRotulo();
+			System.out.println(key + " : " + info.distancia + " - " + predecessor);
 		}
 
 	}
