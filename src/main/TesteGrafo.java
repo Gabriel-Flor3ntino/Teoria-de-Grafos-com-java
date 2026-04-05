@@ -153,11 +153,12 @@ public class TesteGrafo {
 		String raiz = "RJ"; // pode ser qualquer raiz
 		Digrafo mst = AlgoritmoPrim.getInstance().processar(raiz, grafoPonderado);
 		for (Vertice v : mst.getVertices()) {
-			System.out.println("O vértice " + v.getRotulo() + " é adjacente aos vértices:");
-		}
+		    System.out.println("O vértice " + v.getRotulo() + " é adjacente aos vértices:");
 
-		for (Vertice adj : mst.getAdjacencias(v.getRotulo())) {
-			System.out.println(adj.getRotulo() + " com peso " + mst.getPeso(v.getRotulo(), adj.getRotulo()));
+		    for (Vertice adj : mst.getAdjacencias(v.getRotulo())) {
+		        System.out.println(adj.getRotulo() + " com peso " + 
+		            mst.getPeso(v.getRotulo(), adj.getRotulo()));
+		    }
 		}
 
 		System.out.println();
